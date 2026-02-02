@@ -5,7 +5,7 @@
 Before starting, ensure you have:
 
 ```bash
-# Check Java version (need 17+)
+# Check Java version (need 21+)
 java -version
 
 # Check Maven version (need 3.6+)
