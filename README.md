@@ -177,6 +177,12 @@ The backend will start on `http://localhost:8080`
 - `PATCH /api/todos/{id}/toggle` - Toggle completion status
 - `DELETE /api/todos/{id}` - Delete todo
 
+**API Documentation:**
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- OpenAPI Spec: `http://localhost:8080/api-docs`
+
+See [SWAGGER_DOCUMENTATION.md](SWAGGER_DOCUMENTATION.md) for detailed API documentation guide.
+
 ### Frontend (Angular)
 
 1. Navigate to frontend directory:
@@ -248,6 +254,7 @@ curl -X DELETE http://localhost:8080/api/todos/{id}
 - H2 Database
 - Java 17
 - Maven
+- Springdoc OpenAPI 2.3.0 (Swagger UI)
 
 ### Frontend
 - Angular 17

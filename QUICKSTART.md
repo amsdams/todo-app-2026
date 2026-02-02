@@ -93,6 +93,26 @@ curl -X POST http://localhost:8080/api/todos \
   -d '{"title": "Test Todo", "description": "Testing API"}'
 ```
 
+### Using Swagger UI (Recommended)
+
+The easiest way to test the API is using Swagger UI:
+
+1. Go to `http://localhost:8080/swagger-ui.html`
+2. You'll see interactive API documentation
+3. Click on any endpoint (e.g., `POST /api/todos`)
+4. Click **"Try it out"**
+5. Modify the request body if needed
+6. Click **"Execute"** to test the endpoint
+7. See the response immediately
+
+**Benefits:**
+- ✅ Interactive testing without command line
+- ✅ See all available endpoints
+- ✅ View request/response examples
+- ✅ Understand data models
+
+See [SWAGGER_DOCUMENTATION.md](SWAGGER_DOCUMENTATION.md) for complete guide.
+
 ## Access H2 Database Console
 
 1. Go to `http://localhost:8080/h2-console`
