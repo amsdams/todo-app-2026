@@ -1,0 +1,83 @@
+<div class="container">
+  <header>
+    <h1>{{ title }}</h1>
+  </header>
+
+  <!-- Create Todo Form -->
+  <div class="create-todo-section">
+    <h2>Add New Todo</h2>
+    <div class="form-group">
+      <input 
+        type="text" 
+        [(ngModel)]="newTodo.title" 
+        placeholder="Todo title"
+        class="input-field"
+        (keyup.enter)="createTodo()"
+      />
+      <textarea 
+        [(ngModel)]="newTodo.description" 
+        placeholder="Description (optional)"
+        class="input-field textarea-field"
+        rows="3"
+      ></textarea>
+      <button (click)="createTodo()" class="btn btn-primary">Add Todo</button>
+    </div>
+  </div>
+
+  <!-- Todo List -->
+  <div class="todo-list-section">
+    <h2>My Todos ({{ todos.length }})</h2>
+    
+    <div *ngIf="todos.length === 0" class="empty-state">
+      <p>No todos yet. Add one above to get started!</p>
+    </div>
+
+    <div class="todo-list">
+      <div *ngFor="let todo of todos" class="todo-item" [class.completed]="todo.completed">
+        
+        <!-- View Mode -->
+        <div *ngIf="editingTodo?.id !== todo.id" class="todo-view">
+          <div class="todo-content">
+            <input 
+              type="checkbox" 
+              [checked]="todo.completed"
+              (change)="toggleCompletion(todo)"
+              class="checkbox"
+            />
+            <div class="todo-details">
+              <h3 [class.strike-through]="todo.completed">{{ todo.title }}</h3>
+              <p *ngIf="todo.description" class="description">{{ todo.description }}</p>
+              <span class="timestamp">Created: {{ todo.createdAt | date:'short' }}</span>
+            </div>
+          </div>
+          <div class="todo-actions">
+            <button (click)="startEdit(todo)" class="btn btn-secondary btn-small">Edit</button>
+            <button (click)="deleteTodo(todo.id)" class="btn btn-danger btn-small">Delete</button>
+          </div>
+        </div>
+
+        <!-- Edit Mode -->
+        <div *ngIf="editingTodo?.id === todo.id" class="todo-edit">
+          <div class="form-group">
+            <input 
+              type="text" 
+              [(ngModel)]="editForm.title" 
+              placeholder="Todo title"
+              class="input-field"
+            />
+            <textarea 
+              [(ngModel)]="editForm.description" 
+              placeholder="Description (optional)"
+              class="input-field textarea-field"
+              rows="2"
+            ></textarea>
+          </div>
+          <div class="todo-actions">
+            <button (click)="updateTodo()" class="btn btn-primary btn-small">Save</button>
+            <button (click)="cancelEdit()" class="btn btn-secondary btn-small">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
