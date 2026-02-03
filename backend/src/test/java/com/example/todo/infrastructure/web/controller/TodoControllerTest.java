@@ -4,18 +4,15 @@ import com.example.todo.application.service.TodoService;
 import com.example.todo.domain.model.Todo;
 import com.example.todo.infrastructure.web.dto.CreateTodoRequest;
 import com.example.todo.infrastructure.web.mapper.TodoDtoMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,12 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(
-    controllers = TodoController.class,
-    excludeAutoConfiguration = {
-        org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration.class
-    }
+    controllers = TodoController.class
 )
-@ExtendWith({SpringExtension.class, MockitoExtension.class})
 class TodoControllerTest {
 
     @Autowired
