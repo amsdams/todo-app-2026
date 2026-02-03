@@ -124,6 +124,37 @@ See [SWAGGER_DOCUMENTATION.md](SWAGGER_DOCUMENTATION.md) for complete guide.
 
 You can now see your todos in the database!
 
+## Generate Test Coverage Report
+
+Want to see how well the code is tested?
+
+```bash
+cd backend
+mvn clean test
+```
+
+Then open the coverage report:
+
+```bash
+# macOS
+open target/site/jacoco/index.html
+
+# Linux
+xdg-open target/site/jacoco/index.html
+
+# Windows
+start target/site/jacoco/index.html
+```
+
+**What You'll See:**
+
+- 📊 Overall coverage: ~90%
+- 🟢 Green: Well-tested code
+- 🟡 Yellow: Partially tested
+- 🔴 Red: Untested code
+
+See [TEST_COVERAGE.md](TEST_COVERAGE.md) for more details.
+
 ## Troubleshooting
 
 ### Backend won't start

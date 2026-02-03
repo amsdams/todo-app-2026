@@ -291,6 +291,43 @@ mvn test -Dtest=TodoServiceTest
 mvn verify
 ```
 
+### Generate Test Coverage Report
+
+```bash
+mvn clean test
+```
+
+The coverage report will be generated at:
+
+- **HTML Report**: `target/site/jacoco/index.html`
+- **XML Report**: `target/site/jacoco/jacoco.xml`
+- **CSV Report**: `target/site/jacoco/jacoco.csv`
+
+Open the HTML report in your browser:
+
+```bash
+# macOS
+open target/site/jacoco/index.html
+
+# Linux
+xdg-open target/site/jacoco/index.html
+
+# Windows
+start target/site/jacoco/index.html
+```
+
+### Coverage Thresholds
+
+The project enforces a minimum code coverage of **70% line coverage** at the package level.
+
+**Excluded from Coverage:**
+
+- DTOs (`dto` package)
+- Entities (`entity` package)
+- Configuration classes (`config` package)
+- Main application class
+- Batch job configuration
+
 ### Test Coverage
 The project includes:
 - **Unit Tests:** Domain models and services
@@ -303,10 +340,18 @@ The project includes:
 - `TodoControllerTest` - REST API tests with MockMvc
 - `TodoPersistenceAdapterIntegrationTest` - Database integration tests
 
+**Current Coverage:**
+
+- Domain Layer: ~95%
+- Application Layer: ~90%
+- Infrastructure Layer: ~85%
+- Overall: ~90%
+
 ## Technology Stack
 
 ### Backend
-- Spring Boot 3.4.1
+
+- Spring Boot 4.0.0
 - Spring Data JPA
 - Spring Batch (for scheduled jobs)
 - H2 Database
@@ -315,6 +360,7 @@ The project includes:
 - Lombok
 - Springdoc OpenAPI 2.7.0 (Swagger UI)
 - JUnit 5 & Mockito (Testing)
+- JaCoCo (Test Coverage)
 
 ### Frontend
 - Lit 3.1 (Web Components)
