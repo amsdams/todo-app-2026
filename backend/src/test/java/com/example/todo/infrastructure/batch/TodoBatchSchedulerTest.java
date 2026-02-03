@@ -26,7 +26,6 @@ class TodoBatchSchedulerTest {
     @InjectMocks
     private TodoBatchScheduler scheduler;
 
-
     @Test
     void shouldTriggerJobWithParameters() throws Exception {
         // Mock the start method to return a dummy execution ID
