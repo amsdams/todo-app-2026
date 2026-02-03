@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @ComponentScan(basePackages = "com.example.todo.infrastructure.persistence")
 @ActiveProfiles("test")
-class TodoPersistenceAdapterIntegrationTest {
+class TodoPersistenceAdapterIT {
 
     @Autowired
     private TodoPersistenceAdapter todoPersistenceAdapter;

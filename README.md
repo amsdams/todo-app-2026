@@ -275,36 +275,46 @@ curl -X DELETE http://localhost:8080/api/todos/1
 
 ## Testing
 
-### Run All Tests
+### Run Unit Tests (Fast)
 ```bash
 cd backend
 mvn test
 ```
+
+**Duration:** ~10 seconds  
+**Runs:** 22 unit tests (TodoTest, TodoServiceTest, TodoControllerTest)
+
+### Run All Tests (Unit + Integration)
+
+```bash
+cd backend
+mvn verify
+```
+
+**Duration:** ~20 seconds  
+**Runs:** 28 tests (22 unit + 6 integration)
 
 ### Run Specific Test
 ```bash
 mvn test -Dtest=TodoServiceTest
 ```
 
-### Run Integration Tests
+### Run Only Integration Tests
 ```bash
-mvn verify
+mvn failsafe:integration-test
 ```
 
 ### Generate Test Coverage Report
-
 ```bash
-mvn clean test
+mvn clean verify
 ```
 
 The coverage report will be generated at:
-
 - **HTML Report**: `target/site/jacoco/index.html`
 - **XML Report**: `target/site/jacoco/jacoco.xml`
 - **CSV Report**: `target/site/jacoco/jacoco.csv`
 
 Open the HTML report in your browser:
-
 ```bash
 # macOS
 open target/site/jacoco/index.html
@@ -316,12 +326,29 @@ xdg-open target/site/jacoco/index.html
 start target/site/jacoco/index.html
 ```
 
+### Test Plugins
+
+The project uses two Maven test plugins:
+
+**Maven Surefire** - Unit Tests
+
+- Pattern: `*Test.java`
+- Phase: `test`
+- Fast feedback during development
+
+**Maven Failsafe** - Integration Tests
+
+- Pattern: `*IT.java`
+- Phase: `integration-test`
+- Tests with real infrastructure (database, etc.)
+
+See [SUREFIRE_FAILSAFE.md](SUREFIRE_FAILSAFE.md) for detailed information.
+
 ### Coverage Thresholds
 
 The project enforces a minimum code coverage of **70% line coverage** at the package level.
 
 **Excluded from Coverage:**
-
 - DTOs (`dto` package)
 - Entities (`entity` package)
 - Configuration classes (`config` package)
@@ -330,18 +357,19 @@ The project enforces a minimum code coverage of **70% line coverage** at the pac
 
 ### Test Coverage
 The project includes:
-- **Unit Tests:** Domain models and services
-- **Integration Tests:** Controllers and repositories
+
+- **Unit Tests:** Domain models and services (Surefire)
+- **Integration Tests:** Database and full-stack tests (Failsafe)
 - **Test Coverage:** Domain, Application, and Infrastructure layers
 
 **Test Classes:**
-- `TodoTest` - Domain model tests
-- `TodoServiceTest` - Service layer tests with Mockito
-- `TodoControllerTest` - REST API tests with MockMvc
-- `TodoPersistenceAdapterIntegrationTest` - Database integration tests
+
+- `TodoTest` - Domain model tests (Unit)
+- `TodoServiceTest` - Service layer tests with Mockito (Unit)
+- `TodoControllerTest` - REST API tests with MockMvc (Unit)
+- `TodoPersistenceAdapterIT` - Database integration tests (Integration)
 
 **Current Coverage:**
-
 - Domain Layer: ~95%
 - Application Layer: ~90%
 - Infrastructure Layer: ~85%
@@ -350,7 +378,6 @@ The project includes:
 ## Technology Stack
 
 ### Backend
-
 - Spring Boot 4.0.0
 - Spring Data JPA
 - Spring Batch (for scheduled jobs)

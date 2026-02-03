@@ -128,10 +128,22 @@ You can now see your todos in the database!
 
 Want to see how well the code is tested?
 
+### Quick Test (Unit Tests Only)
+
 ```bash
 cd backend
-mvn clean test
+mvn test
 ```
+
+**Fast feedback** - runs in ~10 seconds
+
+### Complete Test (All Tests)
+```bash
+cd backend
+mvn clean verify
+```
+
+**Full validation** - runs in ~20 seconds
 
 Then open the coverage report:
 
@@ -147,13 +159,12 @@ start target/site/jacoco/index.html
 ```
 
 **What You'll See:**
-
 - 📊 Overall coverage: ~90%
 - 🟢 Green: Well-tested code
 - 🟡 Yellow: Partially tested
 - 🔴 Red: Untested code
 
-See [TEST_COVERAGE.md](TEST_COVERAGE.md) for more details.
+See [TEST_COVERAGE.md](TEST_COVERAGE.md) and [SUREFIRE_FAILSAFE.md](SUREFIRE_FAILSAFE.md) for more details.
 
 ## Troubleshooting
 

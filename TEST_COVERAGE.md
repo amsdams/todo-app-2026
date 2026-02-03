@@ -11,14 +11,16 @@ Maven build process and generates comprehensive coverage reports.
 
 ```bash
 cd backend
-mvn clean test
+mvn clean verify
 ```
 
 This will:
-
 1. Clean previous build artifacts
-2. Run all tests
-3. Generate coverage reports
+2. Run all unit tests (Surefire)
+3. Run all integration tests (Failsafe)
+4. Generate coverage reports
+
+**Note:** Use `mvn verify` instead of `mvn test` to include integration tests in coverage.
 
 ### View Reports
 
@@ -38,7 +40,6 @@ start target/site/jacoco/index.html  # Windows
 **Location**: `target/site/jacoco/index.html`
 
 **Features:**
-
 - ✅ Interactive package/class drill-down
 - ✅ Color-coded coverage visualization
 - ✅ Source code highlighting
@@ -46,7 +47,6 @@ start target/site/jacoco/index.html  # Windows
 - ✅ Branch coverage information
 
 **Color Coding:**
-
 - 🟢 **Green**: Fully covered
 - 🟡 **Yellow**: Partially covered
 - 🔴 **Red**: Not covered
@@ -56,7 +56,6 @@ start target/site/jacoco/index.html  # Windows
 **Location**: `target/site/jacoco/jacoco.xml`
 
 **Usage:**
-
 - SonarQube integration
 - CI/CD pipeline reporting
 - Automated quality gates
@@ -66,7 +65,6 @@ start target/site/jacoco/index.html  # Windows
 **Location**: `target/site/jacoco/jacoco.csv`
 
 **Usage:**
-
 - Data analysis
 - Spreadsheet import
 - Custom reporting
@@ -76,29 +74,23 @@ start target/site/jacoco/index.html  # Windows
 JaCoCo measures several types of coverage:
 
 ### 1. **Line Coverage**
-
 Percentage of code lines executed during tests.
 
 **Our Target**: ≥ 70% per package
 
 ### 2. **Branch Coverage**
-
 Percentage of decision branches (if/else, switch) tested.
 
 ### 3. **Method Coverage**
-
 Percentage of methods invoked during tests.
 
 ### 4. **Class Coverage**
-
 Percentage of classes instantiated during tests.
 
 ### 5. **Instruction Coverage**
-
 Percentage of bytecode instructions executed.
 
 ### 6. **Complexity Coverage**
-
 Coverage based on cyclomatic complexity.
 
 ## Coverage Thresholds
@@ -114,7 +106,6 @@ The project enforces minimum coverage thresholds:
 ```
 
 **What This Means:**
-
 - Each package must have ≥ 70% line coverage
 - Build fails if coverage drops below threshold
 - Ensures code quality standards
@@ -134,7 +125,6 @@ Some code is intentionally excluded from coverage requirements:
 ```
 
 **Why Exclude?**
-
 - **DTOs/Entities**: Simple data holders with no logic
 - **Config Classes**: Spring configuration, hard to test in isolation
 - **Main Class**: Entry point, tested via integration tests
@@ -158,25 +148,21 @@ Some code is intentionally excluded from coverage requirements:
 ### Coverage by Package
 
 **com.example.todo.domain.model**
-
 - TodoTest: 6 tests
 - Coverage: ~95%
 - All business methods tested
 
 **com.example.todo.application.service**
-
 - TodoServiceTest: 10 tests
 - Coverage: ~90%
 - All use cases covered
 
 **com.example.todo.infrastructure.web**
-
 - TodoControllerTest: 6 tests
 - Coverage: ~85%
 - All endpoints tested
 
 **com.example.todo.infrastructure.persistence**
-
 - TodoPersistenceAdapterIntegrationTest: 6 tests
 - Coverage: ~85%
 - All repository methods tested
@@ -186,7 +172,6 @@ Some code is intentionally excluded from coverage requirements:
 ### Main Page
 
 Shows package-level summary:
-
 - **Element**: Package name
 - **Missed Instructions**: Red bar
 - **Cov (Coverage)**: Percentage covered
@@ -197,7 +182,6 @@ Shows package-level summary:
 ### Package Drill-Down
 
 Click a package to see:
-
 - Individual class coverage
 - Method-level details
 - Detailed metrics
@@ -205,7 +189,6 @@ Click a package to see:
 ### Source Code View
 
 Click a class to see:
-
 - Line-by-line coverage
 - **Green highlight**: Covered line
 - **Red highlight**: Uncovered line
@@ -228,21 +211,41 @@ if (condition) {  // ← Diamond icon shows branch coverage
 
 ## Maven Commands
 
-### Basic Coverage
+### Unit Tests Only (Fast)
 
 ```bash
-# Run tests and generate coverage
-mvn clean test
+# Run only unit tests with Surefire
+mvn test
 
-# Run tests without coverage
-mvn test -Djacoco.skip=true
+# Duration: ~10 seconds
+# Runs: 22 unit tests (*Test.java)
+```
+
+### All Tests (Unit + Integration)
+
+```bash
+# Run all tests with coverage
+mvn clean verify
+
+# Duration: ~20 seconds
+# Runs: 28 tests (22 unit + 6 integration)
+```
+
+### Integration Tests Only
+
+```bash
+# Run only integration tests with Failsafe
+mvn failsafe:integration-test
+
+# Duration: ~10 seconds
+# Runs: 6 integration tests (*IT.java)
 ```
 
 ### Advanced Options
 
 ```bash
-# Run with coverage and enforce thresholds
-mvn clean verify
+# Run tests without coverage
+mvn test -Djacoco.skip=true
 
 # Generate coverage without running tests (reuse previous test results)
 mvn jacoco:report
@@ -252,13 +255,19 @@ mvn jacoco:check
 
 # Run specific test class with coverage
 mvn test -Dtest=TodoServiceTest
+
+# Skip unit tests, run only integration tests
+mvn verify -Dsurefire.skip=true
+
+# Skip integration tests, run only unit tests
+mvn verify -DskipITs
 ```
 
 ### CI/CD Integration
 
 ```bash
 # Generate all reports (XML for CI tools)
-mvn clean test jacoco:report
+mvn clean verify jacoco:report
 
 # Fail build if coverage below threshold
 mvn clean verify
@@ -273,7 +282,6 @@ Open HTML report → Navigate to red-highlighted code
 ### 2. Add Tests
 
 Focus on:
-
 - ❌ Uncovered branches (yellow highlights)
 - ❌ Uncovered methods (red highlights)
 - ❌ Error handling paths
@@ -292,7 +300,6 @@ Check the report to confirm coverage increased.
 ## Best Practices
 
 ### ✅ Do:
-
 - Write tests for business logic first
 - Aim for 80%+ coverage on critical code
 - Test edge cases and error paths
@@ -300,7 +307,6 @@ Check the report to confirm coverage increased.
 - Exclude trivial code (getters/setters with Lombok)
 
 ### ❌ Don't:
-
 - Chase 100% coverage blindly
 - Write tests just to increase coverage
 - Test trivial getters/setters manually
@@ -312,16 +318,16 @@ Check the report to confirm coverage increased.
 ### IntelliJ IDEA
 
 1. **Run with Coverage:**
-    - Right-click test class → "Run with Coverage"
-    - View coverage in editor gutter
-    - Green/red highlighting
+   - Right-click test class → "Run with Coverage"
+   - View coverage in editor gutter
+   - Green/red highlighting
 
 2. **View Coverage Report:**
-    - Run → Show Coverage Data
-    - Analyze coverage by package/class
+   - Run → Show Coverage Data
+   - Analyze coverage by package/class
 
 3. **Generate Report:**
-    - Tools → Generate Coverage Report
+   - Tools → Generate Coverage Report
 
 ### Eclipse
 
@@ -392,7 +398,6 @@ mvn clean verify sonar:sonar \
 ### Issue: No coverage report generated
 
 **Solution:**
-
 ```bash
 mvn clean test  # Ensure clean build
 ```
@@ -400,7 +405,6 @@ mvn clean test  # Ensure clean build
 ### Issue: Coverage shows 0%
 
 **Solution:**
-
 - Check that tests are running: `mvn test`
 - Verify JaCoCo plugin is configured correctly
 - Ensure `prepare-agent` goal executes before tests
@@ -408,7 +412,6 @@ mvn clean test  # Ensure clean build
 ### Issue: Coverage threshold failure
 
 **Solution:**
-
 - Review uncovered code in HTML report
 - Add tests for uncovered areas
 - Or adjust threshold in `pom.xml` (not recommended)
@@ -417,7 +420,6 @@ mvn clean test  # Ensure clean build
 
 **Solution:**
 Already handled! Lombok-generated code is excluded via:
-
 ```java
 @Data  // Lombok generates getters/setters
 ```
@@ -427,33 +429,33 @@ JaCoCo automatically excludes Lombok-generated code.
 ## Coverage Goals
 
 ### Minimum (Enforced)
-
 - **70% line coverage** per package
 
 ### Recommended
-
 - **80% line coverage** overall
 - **70% branch coverage** overall
 
 ### Excellent
-
 - **90%+ line coverage** overall
 - **80%+ branch coverage** overall
 
 ## Commands Quick Reference
 
 ```bash
-# Generate coverage report
-mvn clean test
+# Unit tests only (fast)
+mvn test
 
-# View report
+# All tests with coverage
+mvn clean verify
+
+# View coverage report
 open target/site/jacoco/index.html
 
 # Check coverage thresholds
 mvn verify
 
-# Run specific test with coverage
-mvn test -Dtest=TodoServiceTest
+# Integration tests only
+mvn failsafe:integration-test
 
 # Skip coverage (faster tests)
 mvn test -Djacoco.skip=true
