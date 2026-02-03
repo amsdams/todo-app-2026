@@ -5,26 +5,22 @@ import com.example.todo.domain.port.TodoRepository;
 import com.example.todo.infrastructure.persistence.entity.TodoEntity;
 import com.example.todo.infrastructure.persistence.mapper.TodoMapper;
 import com.example.todo.infrastructure.persistence.repository.JpaTodoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
  * Outbound adapter for persistence
  */
 @Component
+@RequiredArgsConstructor
 public class TodoPersistenceAdapter implements TodoRepository {
 
     private final JpaTodoRepository jpaTodoRepository;
     private final TodoMapper todoMapper;
-
-    public TodoPersistenceAdapter(JpaTodoRepository jpaTodoRepository, TodoMapper todoMapper) {
-        this.jpaTodoRepository = jpaTodoRepository;
-        this.todoMapper = todoMapper;
-    }
 
     @Override
     public Todo save(Todo todo) {
@@ -34,7 +30,7 @@ public class TodoPersistenceAdapter implements TodoRepository {
     }
 
     @Override
-    public Optional<Todo> findById(UUID id) {
+    public Optional<Todo> findById(Long id) {
         return jpaTodoRepository.findById(id)
                 .map(todoMapper::toDomain);
     }
@@ -47,12 +43,27 @@ public class TodoPersistenceAdapter implements TodoRepository {
     }
 
     @Override
-    public void deleteById(UUID id) {
+    public void deleteById(Long id) {
         jpaTodoRepository.deleteById(id);
     }
 
     @Override
-    public boolean existsById(UUID id) {
+    public boolean existsById(Long id) {
         return jpaTodoRepository.existsById(id);
+    }
+
+    @Override
+    public List<Todo> findCompletedTodos() {
+        return jpaTodoRepository.findCompletedTodos().stream()
+                .map(todoMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteAll(List<Todo> todos) {
+        List<TodoEntity> entities = todos.stream()
+                .map(todoMapper::toEntity)
+                .collect(Collectors.toList());
+        jpaTodoRepository.deleteAll(entities);
     }
 }

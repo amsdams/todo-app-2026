@@ -160,11 +160,12 @@ Frontend runs on: `http://localhost:4200`
 ## 📦 Technologies Used
 
 ### Backend Stack
-- ☕ Java 17
-- 🍃 Spring Boot 3.2.0
+- ☕ Java 21 (LTS)
+- 🍃 Spring Boot 3.4.1
 - 🗄️ Spring Data JPA
 - 🗃️ H2 Database (in-memory)
 - 🔨 Maven
+- 📚 Springdoc OpenAPI 2.7.0 (Swagger UI)
 
 ### Frontend Stack
 - 🅰️ Angular 17

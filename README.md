@@ -143,7 +143,7 @@ todo-app/
 
 ## Prerequisites
 
-- **Java 17** or higher
+- **Java 21** or higher
 - **Maven 3.6+**
 - **Node.js 18+** and npm
 - **Angular CLI** (`npm install -g @angular/cli`)
@@ -212,6 +212,11 @@ The frontend will start on `http://localhost:4200`
 - ✅ Responsive UI design
 - ✅ Real-time updates
 - ✅ Clean hexagonal architecture
+- ✅ Automated batch job to delete completed todos (runs daily at 2 AM)
+- ✅ Database sequence for IDs
+- ✅ Lombok for reduced boilerplate
+- ✅ Comprehensive unit and integration tests
+- ✅ Lightweight frontend with Lit (Web Components)
 
 ## Database
 
@@ -221,6 +226,23 @@ Access H2 Console: `http://localhost:8080/h2-console`
 - JDBC URL: `jdbc:h2:mem:tododb`
 - Username: `sa`
 - Password: (leave empty)
+
+### Batch Jobs
+
+The application includes a scheduled batch job that runs daily at 2 AM to delete all completed todos.
+
+**Configuration:**
+- Schedule: `0 0 2 * * ?` (Every day at 2 AM)
+- Location: `TodoBatchScheduler.java`
+
+**To change the schedule:**
+```java
+@Scheduled(cron = "0 0 * * * ?")  // Every hour
+@Scheduled(cron = "0 */30 * * * ?")  // Every 30 minutes
+```
+
+**Manual execution:**
+The batch job can also be triggered manually through the Spring Batch admin endpoints.
 
 ## API Examples
 
@@ -238,23 +260,56 @@ curl http://localhost:8080/api/todos
 
 ### Toggle Completion
 ```bash
-curl -X PATCH http://localhost:8080/api/todos/{id}/toggle
+curl -X PATCH http://localhost:8080/api/todos/1/toggle
 ```
 
 ### Delete Todo
 ```bash
-curl -X DELETE http://localhost:8080/api/todos/{id}
+curl -X DELETE http://localhost:8080/api/todos/1
 ```
+
+## Testing
+
+### Run All Tests
+```bash
+cd backend
+mvn test
+```
+
+### Run Specific Test
+```bash
+mvn test -Dtest=TodoServiceTest
+```
+
+### Run Integration Tests
+```bash
+mvn verify
+```
+
+### Test Coverage
+The project includes:
+- **Unit Tests:** Domain models and services
+- **Integration Tests:** Controllers and repositories
+- **Test Coverage:** Domain, Application, and Infrastructure layers
+
+**Test Classes:**
+- `TodoTest` - Domain model tests
+- `TodoServiceTest` - Service layer tests with Mockito
+- `TodoControllerTest` - REST API tests with MockMvc
+- `TodoPersistenceAdapterIntegrationTest` - Database integration tests
 
 ## Technology Stack
 
 ### Backend
-- Spring Boot 3.2.0
+- Spring Boot 3.4.1
 - Spring Data JPA
+- Spring Batch (for scheduled jobs)
 - H2 Database
-- Java 17
+- Java 21
 - Maven
-- Springdoc OpenAPI 2.3.0 (Swagger UI)
+- Lombok
+- Springdoc OpenAPI 2.7.0 (Swagger UI)
+- JUnit 5 & Mockito (Testing)
 
 ### Frontend
 - Angular 17

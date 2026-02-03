@@ -1,24 +1,22 @@
 package com.example.todo.infrastructure.web.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Todo data transfer object")
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class TodoDto {
-    // Getters and Setters
-     
-    @Schema(description = "Unique identifier of the todo", example = "123e4567-e89b-12d3-a456-426614174000")
-    private UUID id;
+    
+    @Schema(description = "Unique identifier of the todo", example = "1")
+    private Long id;
     
     @Schema(description = "Title of the todo", example = "Buy groceries", requiredMode = Schema.RequiredMode.REQUIRED)
     private String title;

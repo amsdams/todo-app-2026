@@ -1,33 +1,26 @@
 package com.example.todo.domain.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-@Setter
-@Getter
+@Data
+@NoArgsConstructor
 public class Todo {
-    // Getters and Setters
-    private UUID id;
+    private Long id;
     private String title;
     private String description;
     private boolean completed;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Todo() {
-        this.id = UUID.randomUUID();
+    public Todo(String title, String description) {
+        this.title = title;
+        this.description = description;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         this.completed = false;
-    }
-
-    public Todo(String title, String description) {
-        this();
-        this.title = title;
-        this.description = description;
     }
 
     public void markAsCompleted() {
@@ -45,5 +38,4 @@ public class Todo {
         this.description = description;
         this.updatedAt = LocalDateTime.now();
     }
-
 }

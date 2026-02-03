@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -73,7 +72,7 @@ public class TodoController {
     @GetMapping("/{id}")
     public ResponseEntity<TodoDto> getTodoById(
             @Parameter(description = "ID of the todo to retrieve", required = true)
-            @PathVariable UUID id) {
+            @PathVariable Long id) {
         Todo todo = todoService.getTodoById(id);
         return ResponseEntity.ok(todoDtoMapper.toDto(todo));
     }
@@ -122,7 +121,7 @@ public class TodoController {
     @PutMapping("/{id}")
     public ResponseEntity<TodoDto> updateTodo(
             @Parameter(description = "ID of the todo to update", required = true)
-            @PathVariable UUID id,
+            @PathVariable Long id,
             @Parameter(description = "Todo update request with new title and description", required = true)
             @RequestBody CreateTodoRequest request) {
         Todo todo = todoService.updateTodo(id, request.getTitle(), request.getDescription());
@@ -148,7 +147,7 @@ public class TodoController {
     @PatchMapping("/{id}/toggle")
     public ResponseEntity<TodoDto> toggleTodoCompletion(
             @Parameter(description = "ID of the todo to toggle", required = true)
-            @PathVariable UUID id) {
+            @PathVariable Long id) {
         Todo todo = todoService.toggleTodoCompletion(id);
         return ResponseEntity.ok(todoDtoMapper.toDto(todo));
     }
@@ -171,7 +170,7 @@ public class TodoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTodo(
             @Parameter(description = "ID of the todo to delete", required = true)
-            @PathVariable UUID id) {
+            @PathVariable Long id) {
         todoService.deleteTodo(id);
         return ResponseEntity.noContent().build();
     }
