@@ -2,11 +2,10 @@ package com.example.todo.infrastructure.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.job.parameters.JobParametersBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,7 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Slf4j
 public class TodoBatchScheduler {
 
-    private final JobLauncher jobLauncher;
+    private final JobOperator jobLauncher;
     private final Job deleteCompletedTodosJob;
 
     // Run every day at 2 AM
@@ -29,8 +28,8 @@ public class TodoBatchScheduler {
             JobParameters jobParameters = new JobParametersBuilder()
                     .addLong("time", System.currentTimeMillis())
                     .toJobParameters();
-            
-            jobLauncher.run(deleteCompletedTodosJob, jobParameters);
+
+            jobLauncher.start(deleteCompletedTodosJob, jobParameters);
             
             log.info("Completed scheduled job to delete completed todos");
         } catch (Exception e) {
