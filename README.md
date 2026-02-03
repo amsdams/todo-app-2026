@@ -183,7 +183,7 @@ The backend will start on `http://localhost:8080`
 
 See [SWAGGER_DOCUMENTATION.md](SWAGGER_DOCUMENTATION.md) for detailed API documentation guide.
 
-### Frontend (Angular)
+### Frontend (Lit)
 
 1. Navigate to frontend directory:
 ```bash
@@ -197,10 +197,15 @@ npm install
 
 3. Run the development server:
 ```bash
-ng serve
+npm run dev
 ```
 
 The frontend will start on `http://localhost:4200`
+
+**Build for production:**
+```bash
+npm run build
+```
 
 ## Features
 
@@ -312,10 +317,9 @@ The project includes:
 - JUnit 5 & Mockito (Testing)
 
 ### Frontend
-- Angular 17
-- TypeScript
-- RxJS
-- HttpClient
+- Lit 3.1 (Web Components)
+- Vite 5.0 (Build tool)
+- Native JavaScript (ES6+)
 
 ## Development
 

@@ -48,11 +48,11 @@ cd frontend
 # Install dependencies (first time only)
 npm install
 
-# Start Angular dev server
-ng serve
+# Start Vite dev server
+npm run dev
 ```
 
-Wait for the message: **"Angular Live Development Server is listening on localhost:4200"**
+Wait for the message: **"Local: http://localhost:4200/"**
 
 ### Step 3: Open the Application
 
@@ -127,7 +127,7 @@ You can now see your todos in the database!
 ## Troubleshooting
 
 ### Backend won't start
-- Ensure Java 17+ is installed
+- Ensure Java 21+ is installed
 - Check if port 8080 is already in use
 - Run `mvn clean install` first
 
