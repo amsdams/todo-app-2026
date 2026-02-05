@@ -22,7 +22,7 @@ class TodoDtoMapperTest {
     private Todo todo;
 
     @Test
-    public void testToDto() {
+    void testToDto() {
         // Arrange
         when(todo.getId()).thenReturn(1L);
         when(todo.getTitle()).thenReturn("Todo title");

@@ -29,7 +29,7 @@ class GlobalExceptionHandlerTest {
     private GlobalExceptionHandler globalExceptionHandler;
 
     @Test
-    public void testHandleTodoNotFoundException() {
+    void testHandleTodoNotFoundException() {
         // Arrange
         when(todoNotFoundException.getMessage()).thenReturn("Todo not found");
 
@@ -47,7 +47,7 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void testHandleGenericException() {
+    void testHandleGenericException() {
         // Arrange
         when(exception.getMessage()).thenReturn("Generic error message");
 

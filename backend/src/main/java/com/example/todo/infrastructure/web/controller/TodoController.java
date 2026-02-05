@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Inbound adapter for REST API
@@ -49,7 +48,7 @@ public class TodoController {
     public ResponseEntity<List<TodoDto>> getAllTodos() {
         List<TodoDto> todos = todoService.getAllTodos().stream()
                 .map(todoDtoMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(todos);
     }
 
