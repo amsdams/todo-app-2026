@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Application Service (Use Cases)
@@ -31,18 +30,18 @@ public class TodoService {
         return todoRepository.findAll();
     }
 
-    public Todo getTodoById(UUID id) {
+    public Todo getTodoById(Long id) {
         return todoRepository.findById(id)
                 .orElseThrow(() -> new TodoNotFoundException("Todo not found with id: " + id));
     }
 
-    public Todo updateTodo(UUID id, String title, String description) {
+    public Todo updateTodo(Long id, String title, String description) {
         Todo todo = getTodoById(id);
         todo.updateDetails(title, description);
         return todoRepository.save(todo);
     }
 
-    public Todo toggleTodoCompletion(UUID id) {
+    public Todo toggleTodoCompletion(Long id) {
         Todo todo = getTodoById(id);
         if (todo.isCompleted()) {
             todo.markAsIncomplete();
@@ -52,7 +51,7 @@ public class TodoService {
         return todoRepository.save(todo);
     }
 
-    public void deleteTodo(UUID id) {
+    public void deleteTodo(Long id) {
         if (!todoRepository.existsById(id)) {
             throw new TodoNotFoundException("Todo not found with id: " + id);
         }

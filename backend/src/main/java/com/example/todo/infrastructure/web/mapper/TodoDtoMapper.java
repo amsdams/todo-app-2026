@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 public class TodoDtoMapper {
 
     public TodoDto toDto(Todo todo) {
-        TodoDto dto = new TodoDto();
-        dto.setId(todo.getId());
-        dto.setTitle(todo.getTitle());
-        dto.setDescription(todo.getDescription());
-        dto.setCompleted(todo.isCompleted());
-        dto.setCreatedAt(todo.getCreatedAt());
-        dto.setUpdatedAt(todo.getUpdatedAt());
-        return dto;
+        return TodoDto.builder()
+                .id(todo.getId())
+                .title(todo.getTitle())
+                .description(todo.getDescription())
+                .completed(todo.isCompleted())
+                .createdAt(todo.getCreatedAt())
+                .updatedAt(todo.getUpdatedAt())
+                .build();
     }
 }

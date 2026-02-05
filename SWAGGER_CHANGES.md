@@ -12,7 +12,7 @@ Swagger UI (OpenAPI 3.0) has been integrated into the Todo application to provid
 <dependency>
     <groupId>org.springdoc</groupId>
     <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-    <version>2.3.0</version>
+    <version>2.7.0</version>
 </dependency>
 ```
 

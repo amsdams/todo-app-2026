@@ -2,25 +2,24 @@ package com.example.todo.infrastructure.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-@Setter
-@Getter
 @Entity
 @Table(name = "todos")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class TodoEntity {
-
-    // Getters and Setters
+    
     @Id
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "todo_seq")
+    @SequenceGenerator(name = "todo_seq", sequenceName = "todo_sequence", allocationSize = 1)
+    private Long id;
     
     @Column(nullable = false)
     private String title;
@@ -34,7 +33,6 @@ public class TodoEntity {
     @Column(nullable = false)
     private LocalDateTime createdAt;
     
-    @Column(nullable = false)	
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
-
 }

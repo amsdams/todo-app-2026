@@ -48,11 +48,11 @@ cd frontend
 # Install dependencies (first time only)
 npm install
 
-# Start Angular dev server
-ng serve
+# Start Vite dev server
+npm run dev
 ```
 
-Wait for the message: **"Angular Live Development Server is listening on localhost:4200"**
+Wait for the message: **"Local: http://localhost:4200/"**
 
 ### Step 3: Open the Application
 
@@ -124,10 +124,52 @@ See [SWAGGER_DOCUMENTATION.md](SWAGGER_DOCUMENTATION.md) for complete guide.
 
 You can now see your todos in the database!
 
+## Generate Test Coverage Report
+
+Want to see how well the code is tested?
+
+### Quick Test (Unit Tests Only)
+
+```bash
+cd backend
+mvn test
+```
+
+**Fast feedback** - runs in ~10 seconds
+
+### Complete Test (All Tests)
+```bash
+cd backend
+mvn clean verify
+```
+
+**Full validation** - runs in ~20 seconds
+
+Then open the coverage report:
+
+```bash
+# macOS
+open target/site/jacoco/index.html
+
+# Linux
+xdg-open target/site/jacoco/index.html
+
+# Windows
+start target/site/jacoco/index.html
+```
+
+**What You'll See:**
+- 📊 Overall coverage: ~90%
+- 🟢 Green: Well-tested code
+- 🟡 Yellow: Partially tested
+- 🔴 Red: Untested code
+
+See [TEST_COVERAGE.md](TEST_COVERAGE.md) and [SUREFIRE_FAILSAFE.md](SUREFIRE_FAILSAFE.md) for more details.
+
 ## Troubleshooting
 
 ### Backend won't start
-- Ensure Java 17+ is installed
+- Ensure Java 21+ is installed
 - Check if port 8080 is already in use
 - Run `mvn clean install` first
 

@@ -4,6 +4,9 @@ backend/.mvn/
 backend/mvnw
 backend/mvnw.cmd
 
+# Test Coverage Reports
+backend/target/site/jacoco/
+
 # Frontend (Angular)
 frontend/node_modules/
 frontend/dist/

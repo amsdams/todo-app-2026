@@ -143,7 +143,7 @@ todo-app/
 
 ## Prerequisites
 
-- **Java 17** or higher
+- **Java 21** or higher
 - **Maven 3.6+**
 - **Node.js 18+** and npm
 - **Angular CLI** (`npm install -g @angular/cli`)
@@ -183,7 +183,7 @@ The backend will start on `http://localhost:8080`
 
 See [SWAGGER_DOCUMENTATION.md](SWAGGER_DOCUMENTATION.md) for detailed API documentation guide.
 
-### Frontend (Angular)
+### Frontend (Lit)
 
 1. Navigate to frontend directory:
 ```bash
@@ -197,10 +197,15 @@ npm install
 
 3. Run the development server:
 ```bash
-ng serve
+npm run dev
 ```
 
 The frontend will start on `http://localhost:4200`
+
+**Build for production:**
+```bash
+npm run build
+```
 
 ## Features
 
@@ -212,6 +217,11 @@ The frontend will start on `http://localhost:4200`
 - ✅ Responsive UI design
 - ✅ Real-time updates
 - ✅ Clean hexagonal architecture
+- ✅ Automated batch job to delete completed todos (runs daily at 2 AM)
+- ✅ Database sequence for IDs
+- ✅ Lombok for reduced boilerplate
+- ✅ Comprehensive unit and integration tests
+- ✅ Lightweight frontend with Lit (Web Components)
 
 ## Database
 
@@ -221,6 +231,23 @@ Access H2 Console: `http://localhost:8080/h2-console`
 - JDBC URL: `jdbc:h2:mem:tododb`
 - Username: `sa`
 - Password: (leave empty)
+
+### Batch Jobs
+
+The application includes a scheduled batch job that runs daily at 2 AM to delete all completed todos.
+
+**Configuration:**
+- Schedule: `0 0 2 * * ?` (Every day at 2 AM)
+- Location: `TodoBatchScheduler.java`
+
+**To change the schedule:**
+```java
+@Scheduled(cron = "0 0 * * * ?")  // Every hour
+@Scheduled(cron = "0 */30 * * * ?")  // Every 30 minutes
+```
+
+**Manual execution:**
+The batch job can also be triggered manually through the Spring Batch admin endpoints.
 
 ## API Examples
 
@@ -238,29 +265,134 @@ curl http://localhost:8080/api/todos
 
 ### Toggle Completion
 ```bash
-curl -X PATCH http://localhost:8080/api/todos/{id}/toggle
+curl -X PATCH http://localhost:8080/api/todos/1/toggle
 ```
 
 ### Delete Todo
 ```bash
-curl -X DELETE http://localhost:8080/api/todos/{id}
+curl -X DELETE http://localhost:8080/api/todos/1
 ```
+
+## Testing
+
+### Run Unit Tests (Fast)
+```bash
+cd backend
+mvn test
+```
+
+**Duration:** ~10 seconds  
+**Runs:** 22 unit tests (TodoTest, TodoServiceTest, TodoControllerTest)
+
+### Run All Tests (Unit + Integration)
+
+```bash
+cd backend
+mvn verify
+```
+
+**Duration:** ~20 seconds  
+**Runs:** 28 tests (22 unit + 6 integration)
+
+### Run Specific Test
+```bash
+mvn test -Dtest=TodoServiceTest
+```
+
+### Run Only Integration Tests
+```bash
+mvn failsafe:integration-test
+```
+
+### Generate Test Coverage Report
+```bash
+mvn clean verify
+```
+
+The coverage report will be generated at:
+- **HTML Report**: `target/site/jacoco/index.html`
+- **XML Report**: `target/site/jacoco/jacoco.xml`
+- **CSV Report**: `target/site/jacoco/jacoco.csv`
+
+Open the HTML report in your browser:
+```bash
+# macOS
+open target/site/jacoco/index.html
+
+# Linux
+xdg-open target/site/jacoco/index.html
+
+# Windows
+start target/site/jacoco/index.html
+```
+
+### Test Plugins
+
+The project uses two Maven test plugins:
+
+**Maven Surefire** - Unit Tests
+
+- Pattern: `*Test.java`
+- Phase: `test`
+- Fast feedback during development
+
+**Maven Failsafe** - Integration Tests
+
+- Pattern: `*IT.java`
+- Phase: `integration-test`
+- Tests with real infrastructure (database, etc.)
+
+See [SUREFIRE_FAILSAFE.md](SUREFIRE_FAILSAFE.md) for detailed information.
+
+### Coverage Thresholds
+
+The project enforces a minimum code coverage of **70% line coverage** at the package level.
+
+**Excluded from Coverage:**
+- DTOs (`dto` package)
+- Entities (`entity` package)
+- Configuration classes (`config` package)
+- Main application class
+- Batch job configuration
+
+### Test Coverage
+The project includes:
+
+- **Unit Tests:** Domain models and services (Surefire)
+- **Integration Tests:** Database and full-stack tests (Failsafe)
+- **Test Coverage:** Domain, Application, and Infrastructure layers
+
+**Test Classes:**
+
+- `TodoTest` - Domain model tests (Unit)
+- `TodoServiceTest` - Service layer tests with Mockito (Unit)
+- `TodoControllerTest` - REST API tests with MockMvc (Unit)
+- `TodoPersistenceAdapterIT` - Database integration tests (Integration)
+
+**Current Coverage:**
+- Domain Layer: ~95%
+- Application Layer: ~90%
+- Infrastructure Layer: ~85%
+- Overall: ~90%
 
 ## Technology Stack
 
 ### Backend
-- Spring Boot 3.2.0
+- Spring Boot 4.0.0
 - Spring Data JPA
+- Spring Batch (for scheduled jobs)
 - H2 Database
-- Java 17
+- Java 21
 - Maven
-- Springdoc OpenAPI 2.3.0 (Swagger UI)
+- Lombok
+- Springdoc OpenAPI 2.7.0 (Swagger UI)
+- JUnit 5 & Mockito (Testing)
+- JaCoCo (Test Coverage)
 
 ### Frontend
-- Angular 17
-- TypeScript
-- RxJS
-- HttpClient
+- Lit 3.1 (Web Components)
+- Vite 5.0 (Build tool)
+- Native JavaScript (ES6+)
 
 ## Development
 
