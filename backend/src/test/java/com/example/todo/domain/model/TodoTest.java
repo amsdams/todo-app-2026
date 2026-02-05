@@ -73,11 +73,11 @@ class TodoTest {
         var originalUpdatedAt = todo.getUpdatedAt();
 
         // When
-        try {
+        /*try {
             Thread.sleep(10); // Small delay to ensure timestamp changes
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-        }
+        }*/
         todo.markAsCompleted();
 
         // Then
@@ -91,11 +91,11 @@ class TodoTest {
         var originalUpdatedAt = todo.getUpdatedAt();
 
         // When
-        try {
+        /*try {
             Thread.sleep(10); // Small delay to ensure timestamp changes
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-        }
+        }*/
         todo.updateDetails("New Title", "New Description");
 
         // Then

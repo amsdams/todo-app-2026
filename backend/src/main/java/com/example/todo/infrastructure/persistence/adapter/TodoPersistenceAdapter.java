@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Outbound adapter for persistence
@@ -39,7 +38,7 @@ public class TodoPersistenceAdapter implements TodoRepository {
     public List<Todo> findAll() {
         return jpaTodoRepository.findAll().stream()
                 .map(todoMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -56,14 +55,14 @@ public class TodoPersistenceAdapter implements TodoRepository {
     public List<Todo> findCompletedTodos() {
         return jpaTodoRepository.findCompletedTodos().stream()
                 .map(todoMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public void deleteAll(List<Todo> todos) {
         List<TodoEntity> entities = todos.stream()
                 .map(todoMapper::toEntity)
-                .collect(Collectors.toList());
+                .toList();
         jpaTodoRepository.deleteAll(entities);
     }
 }

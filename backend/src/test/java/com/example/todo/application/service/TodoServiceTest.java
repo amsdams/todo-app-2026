@@ -116,7 +116,7 @@ class TodoServiceTest {
         when(todoRepository.save(testTodo)).thenReturn(testTodo);
 
         // When
-        Todo result = todoService.toggleTodoCompletion(id);
+        todoService.toggleTodoCompletion(id);
 
         // Then
         assertTrue(testTodo.isCompleted());
@@ -132,7 +132,7 @@ class TodoServiceTest {
         when(todoRepository.save(testTodo)).thenReturn(testTodo);
 
         // When
-        Todo result = todoService.toggleTodoCompletion(id);
+        todoService.toggleTodoCompletion(id);
 
         // Then
         assertFalse(testTodo.isCompleted());
