@@ -20,6 +20,34 @@
 
     <properties>
         <java.version>21</java.version>
+        <!-- SonarQube properties -->
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.build.directory}/site/jacoco/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
+
+        <!-- Exclude same patterns from SonarQube analysis -->
+        <sonar.coverage.exclusions>
+            **/config/**,
+            **/dto/**,
+            **/entity/**,
+            **/exception/**,
+            **/*Application.java,
+            **/infrastructure/batch/**
+        </sonar.coverage.exclusions>
+
+        <!-- Additional exclusions for general analysis -->
+        <sonar.exclusions>
+            **/config/**,
+            **/dto/**,
+            **/entity/**,
+            **/*Application.java
+        </sonar.exclusions>
+
+        <!-- Exclude test files from duplication and other checks -->
+        <sonar.cpd.exclusions>
+            **/*Test.java,
+            **/test/**
+        </sonar.cpd.exclusions>
     </properties>
 
     <dependencies>
