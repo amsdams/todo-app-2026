@@ -37,7 +37,7 @@ jobs:
           mvn clean verify
 
       - name: Upload coverage reports
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: ./backend/target/site/jacoco/jacoco.xml
           flags: backend
