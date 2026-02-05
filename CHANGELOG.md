@@ -480,7 +480,8 @@ ng serve
 ## 11. Future Enhancements
 
 Potential additions:
-- [ ] Add test coverage reporting
+
+- [X] Add test coverage reporting
 - [ ] Add E2E tests with Playwright
 - [ ] Add Docker support
 - [ ] Add CI/CD pipeline
