@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -46,7 +46,6 @@ class TodoPersistenceAdapterTest {
         when(expectedTodo.getId()).thenReturn(1L);
         when(expectedTodo.getTitle()).thenReturn("New Todo");
 
-
         when(todoMapper.toEntity(todoToSave)).thenReturn(entityToSave);
         when(jpaTodoRepository.save(entityToSave)).thenReturn(savedEntity);
         when(todoMapper.toDomain(savedEntity)).thenReturn(expectedTodo);
@@ -55,9 +54,9 @@ class TodoPersistenceAdapterTest {
         Todo result = todoPersistenceAdapter.save(todoToSave);
 
         // Then
-        assertThat(result).isNotNull();
-        assertThat(result.getId()).isEqualTo(1L);
-        assertThat(result.getTitle()).isEqualTo("New Todo");
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+        assertEquals("New Todo", result.getTitle());
 
         verify(todoMapper, times(1)).toEntity(todoToSave);
         verify(jpaTodoRepository, times(1)).save(entityToSave);
@@ -83,10 +82,10 @@ class TodoPersistenceAdapterTest {
         Todo result = todoPersistenceAdapter.save(todoToUpdate);
 
         // Then
-        assertThat(result).isNotNull();
-        assertThat(result.getId()).isEqualTo(1L);
-        assertThat(result.getTitle()).isEqualTo("Updated Todo");
-        assertThat(result.isCompleted()).isTrue();
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+        assertEquals("Updated Todo", result.getTitle());
+        assertTrue(result.isCompleted());
 
         verify(todoMapper, times(1)).toEntity(todoToUpdate);
         verify(jpaTodoRepository, times(1)).save(entityToUpdate);
@@ -105,14 +104,13 @@ class TodoPersistenceAdapterTest {
         when(jpaTodoRepository.findById(id)).thenReturn(Optional.of(testEntity));
         when(todoMapper.toDomain(testEntity)).thenReturn(testTodo);
 
-
         // When
         Optional<Todo> result = todoPersistenceAdapter.findById(id);
 
         // Then
-        assertThat(result).isPresent();
-        assertThat(result.get().getId()).isEqualTo(1L);
-        assertThat(result.get().getTitle()).isEqualTo("Test Todo");
+        assertTrue(result.isPresent());
+        assertEquals(1L, result.get().getId());
+        assertEquals("Test Todo", result.get().getTitle());
 
         verify(jpaTodoRepository, times(1)).findById(id);
         verify(todoMapper, times(1)).toDomain(testEntity);
@@ -128,7 +126,7 @@ class TodoPersistenceAdapterTest {
         Optional<Todo> result = todoPersistenceAdapter.findById(id);
 
         // Then
-        assertThat(result).isEmpty();
+        assertTrue(result.isEmpty());
 
         verify(jpaTodoRepository, times(1)).findById(id);
         verify(todoMapper, never()).toDomain(any());
@@ -164,9 +162,13 @@ class TodoPersistenceAdapterTest {
         List<Todo> result = todoPersistenceAdapter.findAll();
 
         // Then
-        assertThat(result).hasSize(3);
-        assertThat(result).extracting(Todo::getId).containsExactly(1L, 2L, 3L);
-        assertThat(result).extracting(Todo::getTitle).containsExactly("Todo 1", "Todo 2", "Todo 3");
+        assertEquals(3, result.size());
+        assertEquals(1L, result.get(0).getId());
+        assertEquals(2L, result.get(1).getId());
+        assertEquals(3L, result.get(2).getId());
+        assertEquals("Todo 1", result.get(0).getTitle());
+        assertEquals("Todo 2", result.get(1).getTitle());
+        assertEquals("Todo 3", result.get(2).getTitle());
 
         verify(jpaTodoRepository, times(1)).findAll();
         verify(todoMapper, times(3)).toDomain(any(TodoEntity.class));
@@ -181,7 +183,7 @@ class TodoPersistenceAdapterTest {
         List<Todo> result = todoPersistenceAdapter.findAll();
 
         // Then
-        assertThat(result).isEmpty();
+        assertTrue(result.isEmpty());
 
         verify(jpaTodoRepository, times(1)).findAll();
         verify(todoMapper, never()).toDomain(any(TodoEntity.class));
@@ -210,7 +212,7 @@ class TodoPersistenceAdapterTest {
         boolean result = todoPersistenceAdapter.existsById(id);
 
         // Then
-        assertThat(result).isTrue();
+        assertTrue(result);
         verify(jpaTodoRepository, times(1)).existsById(id);
     }
 
@@ -224,7 +226,7 @@ class TodoPersistenceAdapterTest {
         boolean result = todoPersistenceAdapter.existsById(id);
 
         // Then
-        assertThat(result).isFalse();
+        assertFalse(result);
         verify(jpaTodoRepository, times(1)).existsById(id);
     }
 
@@ -242,7 +244,6 @@ class TodoPersistenceAdapterTest {
         when(completedTodo2.isCompleted()).thenReturn(true);
         when(completedTodo2.getTitle()).thenReturn("Completed 2");
 
-
         List<TodoEntity> completedEntities = Arrays.asList(completedEntity1, completedEntity2);
 
         when(jpaTodoRepository.findCompletedTodos()).thenReturn(completedEntities);
@@ -253,9 +254,11 @@ class TodoPersistenceAdapterTest {
         List<Todo> result = todoPersistenceAdapter.findCompletedTodos();
 
         // Then
-        assertThat(result).hasSize(2);
-        assertThat(result).allMatch(Todo::isCompleted);
-        assertThat(result).extracting(Todo::getTitle).containsExactly("Completed 1", "Completed 2");
+        assertEquals(2, result.size());
+        assertTrue(result.get(0).isCompleted());
+        assertTrue(result.get(1).isCompleted());
+        assertEquals("Completed 1", result.get(0).getTitle());
+        assertEquals("Completed 2", result.get(1).getTitle());
 
         verify(jpaTodoRepository, times(1)).findCompletedTodos();
         verify(todoMapper, times(2)).toDomain(any(TodoEntity.class));
@@ -270,7 +273,7 @@ class TodoPersistenceAdapterTest {
         List<Todo> result = todoPersistenceAdapter.findCompletedTodos();
 
         // Then
-        assertThat(result).isEmpty();
+        assertTrue(result.isEmpty());
 
         verify(jpaTodoRepository, times(1)).findCompletedTodos();
         verify(todoMapper, never()).toDomain(any(TodoEntity.class));
@@ -304,8 +307,10 @@ class TodoPersistenceAdapterTest {
         List<TodoEntity> capturedEntities = new java.util.ArrayList<>();
         entityIterableCaptor.getValue().forEach(capturedEntities::add);
 
-        assertThat(capturedEntities).hasSize(3);
-        assertThat(capturedEntities).contains(entity1, entity2, entity3);
+        assertEquals(3, capturedEntities.size());
+        assertTrue(capturedEntities.contains(entity1));
+        assertTrue(capturedEntities.contains(entity2));
+        assertTrue(capturedEntities.contains(entity3));
     }
 
     @Test
@@ -324,7 +329,7 @@ class TodoPersistenceAdapterTest {
         List<TodoEntity> capturedEntities = new java.util.ArrayList<>();
         entityIterableCaptor.getValue().forEach(capturedEntities::add);
 
-        assertThat(capturedEntities).isEmpty();
+        assertTrue(capturedEntities.isEmpty());
     }
 
     @Test
@@ -346,8 +351,8 @@ class TodoPersistenceAdapterTest {
         List<TodoEntity> capturedEntities = new java.util.ArrayList<>();
         entityIterableCaptor.getValue().forEach(capturedEntities::add);
 
-        assertThat(capturedEntities).hasSize(1);
-        assertThat(capturedEntities).contains(entity);
+        assertEquals(1, capturedEntities.size());
+        assertTrue(capturedEntities.contains(entity));
     }
 
     @Test
@@ -367,7 +372,7 @@ class TodoPersistenceAdapterTest {
         Todo result = todoPersistenceAdapter.save(domainTodo);
 
         // Then
-        assertThat(result.getId()).isEqualTo(10L);
+        assertEquals(10L, result.getId());
 
         var inOrder = inOrder(todoMapper, jpaTodoRepository);
         inOrder.verify(todoMapper).toEntity(domainTodo);
@@ -378,9 +383,7 @@ class TodoPersistenceAdapterTest {
     @Test
     void shouldVerifyMethodCallOrderForFindAll() {
         // Given
-
         TodoEntity testEntity = mock(TodoEntity.class);
-
         Todo testTodo = mock(Todo.class);
 
         List<TodoEntity> entities = List.of(testEntity);
@@ -395,5 +398,4 @@ class TodoPersistenceAdapterTest {
         inOrder.verify(jpaTodoRepository).findAll();
         inOrder.verify(todoMapper).toDomain(testEntity);
     }
-
 }
