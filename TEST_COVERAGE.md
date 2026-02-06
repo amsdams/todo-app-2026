@@ -40,6 +40,7 @@ start target/site/jacoco/index.html  # Windows
 **Location**: `target/site/jacoco/index.html`
 
 **Features:**
+
 - ✅ Interactive package/class drill-down
 - ✅ Color-coded coverage visualization
 - ✅ Source code highlighting
